@@ -1,0 +1,11 @@
+.contain {
+  padding: 0 2.8rem;
+}
+
+.filled-arrow-down {
+  display: inline-block;
+  clip-path: polygon(50% 100%, 0 0, 100% 0);
+  background: var(--gray);
+  width: 1.2rem;
+  height: 0.6rem;
+}
