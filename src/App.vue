@@ -2,38 +2,59 @@
   <div id="app">
     <Header />
     <ListControls @add-task="addTask" />
-    <TaskList :tasks="tasks" />
+    <TaskList :tasks="todo" @removeTask="removeTask" />
+    <CompletedTasks :completed="completed" />
   </div>
 </template>
 
 <script>
-import Header from './components/Header';
-import ListControls from './components/ListControls';
-import TaskList from './components/TaskList';
+import Header from "./components/Header";
+import ListControls from "./components/ListControls";
+import TaskList from "./components/TaskList";
+import CompletedTasks from "./components/CompletedTasks";
 
 export default {
-  name: 'App',
+  name: "App",
   data: () => ({
     count: 0,
     tasks: []
   }),
+  computed: {
+    todo() {
+      return this.tasks.filter(task => !task.completed);
+    },
+    completed() {
+      return this.tasks.filter(task => task.completed);
+    }
+  },
   components: {
     Header,
     ListControls,
-    TaskList
+    TaskList,
+    CompletedTasks
   },
   methods: {
     addTask() {
       this.count = this.count + 1;
-      return this.tasks.unshift({ id: this.count + 1, title: '', details: '' });
+      this.tasks.unshift({
+        id: this.count,
+        title: "",
+        detail: "Hello",
+        completed: false
+      });
+    },
+    removeTask(id) {
+      this.tasks.forEach(task => {
+        if (task.id === id) task.completed = true;
+      });
     }
   }
 };
 </script>
 
 <style lang="scss">
-@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap');
-@import 'common';
+@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap");
+@import "common";
 
 :root {
   --black: #202124;
@@ -42,7 +63,7 @@ export default {
   --gray-2: #80868b;
   --blue: #4285f4;
   --gray-blue: #f1f3f4;
-  --border-color: #f1f3f4;
+  --border-color: #e6e6e6;
 }
 
 #app {
@@ -53,7 +74,8 @@ export default {
   margin: 5vh auto;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.25);
   border-radius: 10px;
-  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: scroll;
 
   @media (max-width: 620px) {
     width: 100vw;
@@ -85,7 +107,7 @@ html {
 }
 
 body {
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-display: auto;
   font-weight: 400;
   line-height: 1.6;

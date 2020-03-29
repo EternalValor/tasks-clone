@@ -20,7 +20,7 @@
     content: '';
     position: absolute;
     bottom: 0;
-    height: 2px;
+    height: 1px;
     background-color: var(--border-color);
     width: 100%;
   }
@@ -31,6 +31,7 @@
 
     &::after {
       left: 50%;
+      height: 2px;
       transform: translateX(-50%);
       background-color: var(--blue);
       animation: taskFocus 0.2s ease-in forwards;
@@ -64,6 +65,7 @@
   }
   &-leave-active {
     position: absolute;
+    width: 100%;
   }
 }
 

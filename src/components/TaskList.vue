@@ -8,9 +8,9 @@
         :key="task.id"
         @click="handleTaskClick(task.id)"
       >
-        <div class="task-mark">
+        <div class="task-mark" @click="$emit('removeTask', task.id)">
           <div class="task-mark-circle" />
-          <Icon className="task-mark-check" name="check" />
+          <Icon class="task-mark-check" name="check" />
         </div>
         <div class="task-content">
           <div class="task-text">
@@ -24,7 +24,7 @@
             <div class="task-detail">{{ task.detail }}</div>
           </div>
           <div class="edit-task-container">
-            <Icon className="edit-task" name="pencil-outline" />
+            <Icon class="edit-task" name="pencil-outline" />
           </div>
         </div>
       </div>
@@ -32,11 +32,11 @@
   </div>
 </template>
 <script>
-import Icon from './Icon';
-import eb from '../eventBus';
+import Icon from "./Icon";
+import eb from "../eventBus";
 
 export default {
-  name: 'TaskList',
+  name: "TaskList",
   data: () => ({
     editing: -1
   }),
@@ -48,7 +48,7 @@ export default {
   },
   computed: {},
   mounted() {
-    eb.$on('add-task', this.handleAddTask);
+    eb.$on("add-task", this.handleAddTask);
   },
   methods: {
     handleTaskClick(id) {
@@ -59,8 +59,8 @@ export default {
       this.editing = -1;
     },
     handleAddTask() {
-      this.editing = this.tasks[0].id;
       this.$nextTick(() => {
+        this.editing = this.tasks[0].id;
         this.$refs[this.editing][0].focus();
       });
     },
@@ -70,45 +70,21 @@ export default {
     }
   },
   destroyed() {
-    eb.$off('add-task', this.handleAddTask);
+    eb.$off("add-task", this.handleAddTask);
   }
 };
 </script>
-<style lang="scss"></style>
-<style lang="scss" scoped>
+<style lang="scss">
 .task-mark {
   margin-right: 3.2rem;
   width: 3rem;
   height: 100%;
   cursor: pointer;
-
-  &:hover .task-mark-circle {
-    display: none;
-  }
-
-  &:hover .task-mark-check {
-    display: block;
-  }
 }
 
-.task-mark-circle {
-  width: 3rem;
-  height: 3rem;
-  border: 2px solid var(--gray);
-  border-radius: 50%;
-}
-
-.task-mark-check {
-  fill: var(--blue);
-  display: none;
-}
-
-.task-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  padding-right: 2.75rem;
+.task-detail {
+  font-size: 1.6rem;
+  color: var(--gray);
 }
 
 .task-text {
@@ -116,25 +92,12 @@ export default {
   flex: 1;
 }
 
-.task-title {
-  font-size: 2.1rem;
-  font-weight: 500;
-  line-height: 1.2;
+.task-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  padding-right: 1rem;
-  background: transparent;
-  outline: none;
-  border: none;
-  cursor: default;
-
-  &:focus {
-    cursor: text;
-  }
-}
-
-.task-detail {
-  font-size: 1.6rem;
-  color: var(--gray);
+  padding-right: 2.5rem;
 }
 
 .edit-task-container {
@@ -158,8 +121,43 @@ export default {
   width: 3rem;
   height: 3rem;
 }
+</style>
+<style lang="scss" scoped>
+.task-mark {
+  &:hover .task-mark-circle {
+    display: none;
+  }
 
-.list-complete-item {
-  transition: all 1s;
+  &:hover .task-mark-check {
+    display: block;
+  }
+}
+
+.task-mark-circle {
+  width: 3rem;
+  height: 3rem;
+  border: 2px solid var(--gray);
+  border-radius: 50%;
+}
+
+.task-title {
+  font-size: 2.1rem;
+  font-weight: 500;
+  line-height: 1.2;
+  width: 100%;
+  padding-right: 1rem;
+  background: transparent;
+  outline: none;
+  border: none;
+  cursor: default;
+
+  &:focus {
+    cursor: text;
+  }
+}
+
+.task-mark-check {
+  fill: var(--blue);
+  display: none;
 }
 </style>
