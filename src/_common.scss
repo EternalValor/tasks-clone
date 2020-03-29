@@ -9,3 +9,69 @@
   width: 1.2rem;
   height: 0.6rem;
 }
+
+.task {
+  position: relative;
+  display: flex;
+  align-items: center;
+  transition: all 0.1s ease-in;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    height: 2px;
+    background-color: var(--border-color);
+    width: 100%;
+  }
+
+  &--focused {
+    top: -2px;
+    background-color: var(--gray-blue);
+
+    &::after {
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--blue);
+      animation: taskFocus 0.2s ease-in forwards;
+    }
+
+    &:hover {
+      box-shadow: none !important;
+
+      &::after {
+        display: block !important;
+      }
+    }
+  }
+
+  &:hover {
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.25);
+
+    &::after {
+      display: none;
+    }
+
+    & .edit-task {
+      display: block;
+    }
+  }
+
+  &-enter,
+  &-leave-to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+  &-leave-active {
+    position: absolute;
+  }
+}
+
+@keyframes taskFocus {
+  0% {
+    width: 0%;
+  }
+  100% {
+    width: 100%;
+  }
+}

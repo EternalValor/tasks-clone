@@ -83,6 +83,7 @@ export default {
 
     &__list {
       position: absolute;
+      z-index: 10;
       top: 50%;
       visibility: hidden;
       opacity: 0;
@@ -104,7 +105,7 @@ export default {
     &__list-item {
       padding: 0.75rem 0;
       border-bottom: 1px solid var(--border-color);
-      font-weight: 300;
+      font-weight: 400;
       font-size: 2rem;
       cursor: pointer;
 
