@@ -7,8 +7,9 @@
         v-for="task in tasks"
         :key="task.id"
         @click="handleTaskClick(task.id)"
+        @contextmenu.prevent="toggleContextMenu(task.id)"
       >
-        <div class="task-mark" @click="$emit('removeTask', task.id)">
+        <div class="task-mark" @click="$emit('completeTask', task.id)">
           <div class="task-mark-circle" />
           <Icon class="task-mark-check" name="check" />
         </div>
@@ -27,6 +28,17 @@
             <Icon class="edit-task" name="pencil-outline" />
           </div>
         </div>
+        <div
+          v-if="contextMenu === task.id"
+          class="task__context-menu-container"
+          @click="handleContextMenuClick"
+          @contextmenu.prevent="handleContextMenuClick"
+        >
+          <div class="task__context-menu">
+            <div class="task__context-menu__option" data-type="delete" :data-id="task.id">Delete</div>
+            <div class="task__context-menu__option">Move to another list</div>
+          </div>
+        </div>
       </div>
     </transition-group>
   </div>
@@ -38,7 +50,8 @@ import eb from "../eventBus";
 export default {
   name: "TaskList",
   data: () => ({
-    editing: -1
+    editing: -1,
+    contextMenu: -1
   }),
   components: {
     Icon
@@ -67,6 +80,15 @@ export default {
     handleEnterKey(id) {
       this.editing = -1;
       this.$refs[id][0].blur();
+    },
+    toggleContextMenu(id) {
+      this.contextMenu = id;
+    },
+    handleContextMenuClick(e) {
+      if (e.srcElement.dataset.type === "delete")
+        this.$emit("deleteTask", e.srcElement.dataset.id);
+      e.stopPropagation();
+      this.contextMenu = -1;
     }
   },
   destroyed() {
@@ -153,6 +175,43 @@ export default {
 
   &:focus {
     cursor: text;
+  }
+}
+
+.task__context-menu-container {
+  position: absolute;
+  left: 4rem;
+  top: 50%;
+
+  &::before {
+    content: "";
+    position: fixed;
+    z-index: 19;
+    width: 100vw;
+    height: 100vh;
+    top: 0;
+    left: 0;
+  }
+}
+
+.task__context-menu {
+  position: relative;
+  z-index: 20;
+  min-width: 27rem;
+  background: var(--white);
+  padding: 1.5rem 0;
+  border-radius: 4px;
+  box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+
+  &__option {
+    font-size: 2rem;
+    padding: 1.25rem 2.4rem;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--gray-2);
+    }
   }
 }
 

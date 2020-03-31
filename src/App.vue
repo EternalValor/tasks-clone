@@ -2,7 +2,7 @@
   <div id="app">
     <Header />
     <ListControls @add-task="addTask" />
-    <TaskList :tasks="todo" @removeTask="removeTask" />
+    <TaskList :tasks="todo" @completeTask="completeTask" @deleteTask="deleteTask" />
     <CompletedTasks :completed="completed" />
   </div>
 </template>
@@ -39,14 +39,17 @@ export default {
       this.tasks.unshift({
         id: this.count,
         title: "",
-        detail: "Hello",
+        detail: "",
         completed: false
       });
     },
-    removeTask(id) {
+    completeTask(id) {
       this.tasks.forEach(task => {
         if (task.id === id) task.completed = true;
       });
+    },
+    deleteTask(id) {
+      this.tasks = this.tasks.filter(task => task.id !== id);
     }
   }
 };
@@ -61,6 +64,7 @@ export default {
   --white: #ffffff;
   --gray: #5f6368;
   --gray-2: #80868b;
+  --gray-2: #ccc;
   --blue: #4285f4;
   --gray-blue: #f1f3f4;
   --border-color: #e6e6e6;
