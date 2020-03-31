@@ -3,7 +3,7 @@
     <Header />
     <ListControls @add-task="addTask" />
     <TaskList :tasks="todo" @completeTask="completeTask" @deleteTask="deleteTask" />
-    <CompletedTasks :completed="completed" />
+    <CompletedTasks :completed="completed" @deleteTask="deleteTask" />
   </div>
 </template>
 
@@ -49,7 +49,7 @@ export default {
       });
     },
     deleteTask(id) {
-      this.tasks = this.tasks.filter(task => task.id !== id);
+      this.tasks = this.tasks.filter(task => task.id !== parseInt(id));
     }
   }
 };

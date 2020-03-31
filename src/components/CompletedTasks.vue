@@ -15,7 +15,7 @@
             <div class="completed-title">{{ task.title }}</div>
             <div class="task-detail">{{ task.detail }}</div>
           </div>
-          <div class="edit-task-container">
+          <div class="edit-task-container" @click="$emit('deleteTask', task.id)">
             <Icon class="edit-task" name="trash-can-outline" />
           </div>
         </div>
