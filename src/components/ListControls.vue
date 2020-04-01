@@ -3,22 +3,22 @@
     <div role="button" class="add-button" @click="handleAdd">
       <span>+</span> Add a Task
     </div>
-    <div class="menu"><Icon className="icon" name="dots-vertical" /></div>
+    <div class="menu">
+      <Icon class="icon" name="dots-vertical" />
+    </div>
   </div>
 </template>
 <script>
-import Icon from './Icon';
-import eb from '../eventBus';
+import Icon from "./Icon";
 
 export default {
-  name: 'ListControls',
+  name: "ListControls",
   components: {
     Icon
   },
   methods: {
     handleAdd() {
-      this.$emit('add-task');
-      eb.$emit('add-task');
+      this.$emit("addTask");
     }
   }
 };

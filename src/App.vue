@@ -1,22 +1,24 @@
 <template>
   <div id="app">
     <Header />
-    <ListControls @add-task="addTask" />
-    <TaskList :tasks="todo" @completeTask="completeTask" @deleteTask="deleteTask" />
-    <CompletedTasks :completed="completed" @deleteTask="deleteTask" />
+    <TaskList
+      :todo="todo"
+      :completed="completed"
+      @completeTask="completeTask"
+      @deleteTask="deleteTask"
+      @addTask="addTask"
+    />
   </div>
 </template>
 
 <script>
 import Header from "./components/Header";
-import ListControls from "./components/ListControls";
 import TaskList from "./components/TaskList";
-import CompletedTasks from "./components/CompletedTasks";
 
 export default {
   name: "App",
   data: () => ({
-    count: 0,
+    count: 1,
     tasks: []
   }),
   computed: {
@@ -29,9 +31,7 @@ export default {
   },
   components: {
     Header,
-    ListControls,
-    TaskList,
-    CompletedTasks
+    TaskList
   },
   methods: {
     addTask() {
@@ -64,13 +64,15 @@ export default {
   --white: #ffffff;
   --gray: #5f6368;
   --gray-2: #80868b;
-  --gray-2: #ccc;
+  --gray-3: #ccc;
   --blue: #4285f4;
   --gray-blue: #f1f3f4;
   --border-color: #e6e6e6;
 }
 
 #app {
+  display: flex;
+  flex-direction: column;
   position: relative;
   background: var(--white);
   width: 64rem;
@@ -86,6 +88,21 @@ export default {
     height: 100vh;
     margin: 0;
     border-radius: 0px;
+  }
+
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+  & {
+    scrollbar-width: thin;
+    scrollbar-color: var(--gray-3) transparent;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background-color: var(--gray-3);
+    border-radius: 60px;
   }
 }
 

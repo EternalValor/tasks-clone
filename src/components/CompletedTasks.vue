@@ -5,31 +5,24 @@
       <Icon class="chevron" :name="open ? 'chevron-up' : 'chevron-down'" />
     </div>
     <div v-if="open">
-      <div v-for="task in completed" :key="task.id" class="task contain">
-        <div class="task-mark" @click="$emit('removeTask', task.id)">
-          <div class="task-mark-circle" />
-          <Icon class="completed-check" name="check" />
-        </div>
-        <div class="task-content">
-          <div class="task-text">
-            <div class="completed-title">{{ task.title }}</div>
-            <div class="task-detail">{{ task.detail }}</div>
-          </div>
-          <div class="edit-task-container" @click="$emit('deleteTask', task.id)">
-            <Icon class="edit-task" name="trash-can-outline" />
-          </div>
-        </div>
-      </div>
+      <Task
+        v-for="task in completed"
+        :key="task.id"
+        :task="task"
+        @deleteTask="$emit('deleteTask', task.id)"
+      />
     </div>
   </div>
 </template>
 <script>
 import Icon from "./Icon";
+import Task from "./Task";
 
 export default {
   name: "CompletedTasks",
   components: {
-    Icon
+    Icon,
+    Task
   },
   data: () => ({
     open: false
@@ -75,11 +68,5 @@ export default {
 
 .completed-check {
   fill: var(--blue);
-}
-
-.completed-title {
-  font-size: 2.1rem;
-  line-height: 1.2;
-  text-decoration: line-through;
 }
 </style>
