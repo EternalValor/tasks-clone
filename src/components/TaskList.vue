@@ -1,19 +1,14 @@
 <template>
   <div class="task-list">
-    <Tasks
-      :tasks="todo"
-      @completeTask="completeTask"
-      @deleteTask="deleteTask"
-      @addTask="$emit('addTask')"
-    />
-    <CompletedTasks :completed="completed" @deleteTask="deleteTask" />
+    <Tasks :tasks="todo" />
+    <CompletedTasks :completed="completed" />
   </div>
 </template>
 <script>
-import Tasks from "./Tasks";
-import CompletedTasks from "./CompletedTasks";
+import Tasks from './Tasks';
+import CompletedTasks from './CompletedTasks';
 export default {
-  name: "TaskList",
+  name: 'TaskList',
   components: {
     Tasks,
     CompletedTasks
@@ -21,14 +16,6 @@ export default {
   props: {
     todo: Array,
     completed: Array
-  },
-  methods: {
-    completeTask(id) {
-      this.$emit("completeTask", id);
-    },
-    deleteTask(id) {
-      this.$emit("deleteTask", id);
-    }
   }
 };
 </script>

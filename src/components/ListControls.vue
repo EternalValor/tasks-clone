@@ -9,16 +9,16 @@
   </div>
 </template>
 <script>
-import Icon from "./Icon";
+import Icon from './Icon';
 
 export default {
-  name: "ListControls",
+  name: 'ListControls',
   components: {
     Icon
   },
   methods: {
     handleAdd() {
-      this.$emit("addTask");
+      this.$store.dispatch('addTask');
     }
   }
 };

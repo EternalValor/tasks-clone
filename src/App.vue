@@ -1,63 +1,28 @@
 <template>
   <div id="app">
     <Header />
-    <TaskList
-      :todo="todo"
-      :completed="completed"
-      @completeTask="completeTask"
-      @deleteTask="deleteTask"
-      @addTask="addTask"
-    />
+    <TaskList :todo="todo" :completed="completed" />
   </div>
 </template>
 
 <script>
-import Header from "./components/Header";
-import TaskList from "./components/TaskList";
+import Header from './components/Header';
+import TaskList from './components/TaskList';
+import { mapGetters } from 'vuex';
 
 export default {
-  name: "App",
-  data: () => ({
-    count: 1,
-    tasks: []
-  }),
-  computed: {
-    todo() {
-      return this.tasks.filter(task => !task.completed);
-    },
-    completed() {
-      return this.tasks.filter(task => task.completed);
-    }
-  },
+  name: 'App',
+  computed: mapGetters(['todo', 'completed']),
   components: {
     Header,
     TaskList
-  },
-  methods: {
-    addTask() {
-      this.count = this.count + 1;
-      this.tasks.unshift({
-        id: this.count,
-        title: "",
-        detail: "",
-        completed: false
-      });
-    },
-    completeTask(id) {
-      this.tasks.forEach(task => {
-        if (task.id === id) task.completed = true;
-      });
-    },
-    deleteTask(id) {
-      this.tasks = this.tasks.filter(task => task.id !== parseInt(id));
-    }
   }
 };
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap");
-@import "common";
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap');
+@import 'common';
 
 :root {
   --black: #202124;
@@ -128,7 +93,7 @@ html {
 }
 
 body {
-  font-family: "Roboto", sans-serif;
+  font-family: 'Roboto', sans-serif;
   font-display: auto;
   font-weight: 400;
   line-height: 1.6;

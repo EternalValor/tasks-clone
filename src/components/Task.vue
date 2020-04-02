@@ -5,7 +5,10 @@
     @click="!task.completed && handleTaskClick(task.id)"
     @contextmenu.prevent="toggleContextMenu(task.id)"
   >
-    <div class="task-mark" @click.stop="!task.completed && $emit('completeTask')">
+    <div
+      class="task-mark"
+      @click.stop="!task.completed && $store.dispatch('completeTask', task.id)"
+    >
       <div v-if="!task.completed">
         <div class="task-mark-circle" />
         <Icon class="task-mark-check" name="check" />
@@ -27,9 +30,17 @@
       </div>
       <div
         class="task-action-container"
-        @click.stop="task.completed ? $emit('deleteTask') : $emit('editTask')"
+        @click.stop="
+          task.completed
+            ? $store.dispatch('deleteTask', task.id)
+            : $store.dispatch('editTask', task.id)
+        "
       >
-        <Icon v-if="!task.completed" class="task-action" name="pencil-outline" />
+        <Icon
+          v-if="!task.completed"
+          class="task-action"
+          name="pencil-outline"
+        />
         <Icon v-else class="task-action" name="trash-can-outline" />
       </div>
     </div>
@@ -40,17 +51,19 @@
       @contextmenu.prevent="handleContextMenuClick"
     >
       <div class="context-menu">
-        <div class="context-menu__option" data-type="delete" :data-id="task.id">Delete</div>
+        <div class="context-menu__option" data-type="delete" :data-id="task.id">
+          Delete
+        </div>
         <div class="context-menu__option">Move to another list</div>
       </div>
     </div>
   </div>
 </template>
 <script>
-import Icon from "./Icon";
+import Icon from './Icon';
 
 export default {
-  name: "Task",
+  name: 'Task',
   data: () => ({
     editing: false,
     contextMenu: false
@@ -78,7 +91,8 @@ export default {
       this.contextMenu = !this.contextMenu;
     },
     handleContextMenuClick(e) {
-      if (e.srcElement.dataset.type === "delete") this.$emit("deleteTask");
+      if (e.srcElement.dataset.type === 'delete')
+        this.$store.dispatch('deleteTask', this.task.id);
       e.stopPropagation();
       this.contextMenu = false;
     }
@@ -99,7 +113,7 @@ export default {
   transition: all 0.1s ease-in;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
     bottom: 0;
     height: 1px;
@@ -250,7 +264,7 @@ export default {
   top: 50%;
 
   &::before {
-    content: "";
+    content: '';
     position: fixed;
     z-index: 19;
     width: 100vw;

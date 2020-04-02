@@ -5,21 +5,16 @@
       <Icon class="chevron" :name="open ? 'chevron-up' : 'chevron-down'" />
     </div>
     <div v-if="open">
-      <Task
-        v-for="task in completed"
-        :key="task.id"
-        :task="task"
-        @deleteTask="$emit('deleteTask', task.id)"
-      />
+      <Task v-for="task in completed" :key="task.id" :task="task" />
     </div>
   </div>
 </template>
 <script>
-import Icon from "./Icon";
-import Task from "./Task";
+import Icon from './Icon';
+import Task from './Task';
 
 export default {
-  name: "CompletedTasks",
+  name: 'CompletedTasks',
   components: {
     Icon,
     Task

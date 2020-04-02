@@ -18,40 +18,105 @@
           class="header__drop-down__list-item"
           v-for="list in lists"
           :key="list"
-          @click="() => (currentList = list)"
+          @click="$store.dispatch('changeList', list)"
         >
           <span>{{ list }}</span>
+          <Icon
+            v-if="list === currentList"
+            className="list-check"
+            name="check"
+          />
         </div>
-        <div class="header__drop-down__list-item">
+        <div class="header__drop-down__list-item" @click="toggleModal">
           <span>Create new list</span>
+        </div>
+      </div>
+    </div>
+    <div v-if="modalOpen" class="modal-container">
+      <div class="modal-background" @click="toggleModal"></div>
+      <div class="modal">
+        <h4 class="modal__title">Create new list</h4>
+        <div
+          class="modal__input-container"
+          :class="[modalInputFocused && 'modal__input-container--focused']"
+        >
+          <input
+            type="text"
+            class="modal__input"
+            placeholder="Enter name"
+            v-model="newListName"
+            ref="modalInput"
+            @focus="modalInputFocused = true"
+            @blur="modalInputFocused = false"
+            @keydown.enter="createList"
+          />
+        </div>
+        <div class="modal__buttons">
+          <div class="modal__button" role="button" @click="toggleModal">
+            Cancel
+          </div>
+          <div
+            class="modal__button modal__button--blue"
+            role="button"
+            @click="createList"
+          >
+            Save
+          </div>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import Icon from './Icon';
+import { mapState, mapGetters } from 'vuex';
+
 export default {
   name: 'Home',
+  components: {
+    Icon
+  },
   data: () => ({
-    lists: ['My Tasks', 'Your Tasks'],
-    currentList: '',
-    dropDownOpen: false
+    dropDownOpen: false,
+    modalInputFocused: false,
+    newListName: '',
+    modalOpen: false
   }),
-  created() {
-    if (this.lists[0]) this.currentList = this.lists[0];
-    else this.currentList = 'My Tasks';
+  computed: {
+    ...mapState(['currentList']),
+    ...mapGetters(['lists'])
   },
   methods: {
     toggleDropDown() {
       this.dropDownOpen = !this.dropDownOpen;
+    },
+    toggleModal() {
+      this.modalOpen = !this.modalOpen;
+      this.$nextTick(() => {
+        if (this.modalOpen) this.$refs.modalInput.focus();
+      });
+    },
+    createList() {
+      this.$store.dispatch('addList', this.newListName);
+      this.$store.dispatch('changeList', this.newListName);
+      this.modalOpen = false;
+      this.newListName = '';
     }
   }
 };
 </script>
 <style lang="scss" scoped>
+.list-check {
+  fill: var(--gray-2);
+}
+
 .header {
   border-bottom: 1px solid var(--border-color);
   padding-top: 1.1rem;
+
+  @media (max-width: 620px) {
+    padding-top: 2.5rem;
+  }
 
   &__title {
     color: var(--gray-2);
@@ -103,7 +168,10 @@ export default {
     }
 
     &__list-item {
-      padding: 0.75rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0.75rem 2.8rem;
       border-bottom: 1px solid var(--border-color);
       font-weight: 400;
       font-size: 2rem;
@@ -111,13 +179,131 @@ export default {
 
       span {
         display: block;
-        padding: 0.75rem 2.8rem;
+        padding: 0.75rem 0;
 
         &:hover {
           background-color: #f0f0f0;
         }
       }
     }
+  }
+}
+
+.modal-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-background {
+  position: absolute;
+  z-index: 99;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.45);
+  animation: fade-in 0.1s ease-out forwards;
+}
+
+.modal {
+  position: relative;
+  z-index: 100;
+  width: 80%;
+  padding: 3.6rem 3rem 2.4rem 3rem;
+  background: var(--white);
+  border-radius: 8px;
+  font-size: 2rem;
+  animation: zoom-in 0.2s ease-out forwards;
+
+  &__title {
+    font-weight: 500;
+    margin-bottom: 1.8rem;
+  }
+
+  &__input-container {
+    position: relative;
+    margin-bottom: 1.4rem;
+
+    &::before {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: -1px;
+      width: 100%;
+      height: 1px;
+      background-color: var(--gray-2);
+    }
+
+    &::after {
+      content: '';
+      display: block;
+      position: absolute;
+      bottom: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0%;
+      height: 2px;
+      background-color: var(--gray-2);
+      transition: width 0.1s ease-in-out;
+    }
+
+    &--focused {
+      &::after {
+        content: '';
+        width: 100%;
+        background-color: var(--blue);
+      }
+    }
+  }
+
+  &__input {
+    width: 100%;
+    padding: 1.1rem 1.5rem;
+    background-color: var(--gray-blue);
+    font-size: 2rem;
+    outline: none;
+    border: none;
+  }
+
+  &__buttons {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__button {
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      margin-right: 2rem;
+    }
+
+    &--blue {
+      color: var(--blue);
+    }
+  }
+}
+
+@keyframes fade-in {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes zoom-in {
+  0% {
+    transform: scale(0.3);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>
