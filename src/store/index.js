@@ -4,19 +4,21 @@ import Vuex from 'vuex';
 Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-    count: 0,
-    lists: {
-      'My List': {
-        tasks: []
-      }
-    },
-    currentList: 'My List',
-    editing: {
-      list: null,
-      id: null
-    }
-  },
+  state: window.localStorage.getItem('STORE')
+    ? JSON.parse(window.localStorage.getItem('STORE'))
+    : {
+        count: 0,
+        lists: {
+          'My List': {
+            tasks: []
+          }
+        },
+        currentList: 'My List',
+        editing: {
+          list: null,
+          id: null
+        }
+      },
   mutations: {
     unShiftTask(state, list) {
       state.lists[list].tasks.unshift({
@@ -106,6 +108,7 @@ export default new Vuex.Store({
         ? state.lists[state.editing.list].tasks.filter(
             task => task.id === state.editing.id
           )[0]
-        : { title: '', details: '' }
+        : { title: '', details: '' },
+    state: state => state
   }
 });
