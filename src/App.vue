@@ -1,22 +1,22 @@
 <template>
   <div id="app">
-    <Header />
-    <TaskList :todo="todo" :completed="completed" />
+    <Edit :class="[editing.list === null && 'edit--hidden']" />
+    <Home />
   </div>
 </template>
 
 <script>
-import Header from './components/Header';
-import TaskList from './components/TaskList';
-import { mapGetters } from 'vuex';
+import Home from './views/Home';
+import Edit from './views/Edit';
+import { mapState } from 'vuex';
 
 export default {
   name: 'App',
-  computed: mapGetters(['todo', 'completed']),
   components: {
-    Header,
-    TaskList
-  }
+    Home,
+    Edit
+  },
+  computed: mapState(['editing'])
 };
 </script>
 
@@ -36,8 +36,6 @@ export default {
 }
 
 #app {
-  display: flex;
-  flex-direction: column;
   position: relative;
   background: var(--white);
   width: 64rem;

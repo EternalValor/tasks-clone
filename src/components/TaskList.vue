@@ -7,16 +7,14 @@
 <script>
 import Tasks from './Tasks';
 import CompletedTasks from './CompletedTasks';
+import { mapGetters } from 'vuex';
 export default {
   name: 'TaskList',
   components: {
     Tasks,
     CompletedTasks
   },
-  props: {
-    todo: Array,
-    completed: Array
-  }
+  computed: mapGetters(['todo', 'completed'])
 };
 </script>
 <style lang="scss" scoped>

@@ -177,13 +177,13 @@ export default {
       font-size: 2rem;
       cursor: pointer;
 
+      &:hover {
+        background-color: #f0f0f0;
+      }
+
       span {
         display: block;
         padding: 0.75rem 0;
-
-        &:hover {
-          background-color: #f0f0f0;
-        }
       }
     }
   }

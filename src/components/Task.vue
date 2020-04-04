@@ -26,14 +26,14 @@
           @keydown.enter="handleEnterKey(task.id)"
         />
         <div v-else class="completed-title">{{ task.title }}</div>
-        <div class="detail">{{ task.detail }}</div>
+        <div class="details">{{ task.details }}</div>
       </div>
       <div
         class="task-action-container"
         @click.stop="
           task.completed
             ? $store.dispatch('deleteTask', task.id)
-            : $store.dispatch('editTask', task.id)
+            : $store.dispatch('toggleEditing', task.id)
         "
       >
         <Icon
@@ -61,6 +61,7 @@
 </template>
 <script>
 import Icon from './Icon';
+import { mapState } from 'vuex';
 
 export default {
   name: 'Task',
@@ -72,6 +73,7 @@ export default {
     task: Object,
     newest: Boolean
   },
+  computed: mapState(['currentList']),
   components: {
     Icon
   },
@@ -231,7 +233,7 @@ export default {
   text-decoration: line-through;
 }
 
-.detail {
+.details {
   font-size: 1.6rem;
   color: var(--gray);
 }
@@ -290,7 +292,7 @@ export default {
     cursor: pointer;
 
     &:hover {
-      background-color: var(--gray-2);
+      background-color: var(--gray-3);
     }
   }
 }
