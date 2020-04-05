@@ -2,18 +2,18 @@
 
 ![App screenshot](./app_screenshot.png)
 
-## Project setup and start
+## Project setup and start 🏃
 
 ```
 yarn install && yarn serve
 ```
 
-### To create a production build in the /dist directory
+### To create a production build in the /dist directory 👷
 
 ```
 yarn build
 ```
 
-## Motivation?
+## Motivation? 🤔
 
 I've been a life long _React.js_ developer, but have never dove deep into any other framework. So I started this project as a **Vue.js** learning sandbox. I chose the Google Tasks app to clone as it is a more advanced implementation of the iconic "todo list first project" and seemed to have all the basic features a fully fledged web app would have.
