@@ -1,5 +1,7 @@
 # A Google Tasks clone built with Vue and Vuex
 
+## <a href="https://tasks-clone.netlify.com/" target="_blank">Live Demo</a>
+
 ![App screenshot](./app_screenshot.png)
 
 ## Project setup and start 🏃
