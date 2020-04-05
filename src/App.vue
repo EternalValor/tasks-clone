@@ -2,21 +2,24 @@
   <div id="app">
     <Edit :class="[editing.list === null && 'edit--hidden']" />
     <Home />
+    <Undo />
   </div>
 </template>
 
 <script>
 import Home from './views/Home';
 import Edit from './views/Edit';
+import Undo from './components/Undo';
 import { mapState } from 'vuex';
 
 export default {
   name: 'App',
   components: {
     Home,
-    Edit
+    Edit,
+    Undo,
   },
-  computed: mapState(['editing'])
+  computed: mapState(['editing']),
 };
 </script>
 

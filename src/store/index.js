@@ -10,14 +10,20 @@ export default new Vuex.Store({
         count: 0,
         lists: {
           'My List': {
-            tasks: []
-          }
+            tasks: [],
+          },
         },
         currentList: 'My List',
         editing: {
           list: null,
-          id: null
-        }
+          id: null,
+        },
+        archive: {
+          list: '',
+          index: -1,
+          task: {},
+          undone: false,
+        },
       },
   mutations: {
     unShiftTask(state, list) {
@@ -25,7 +31,7 @@ export default new Vuex.Store({
         id: state.count,
         title: '',
         details: '',
-        completed: false
+        completed: false,
       });
     },
     increment(state) {
@@ -42,7 +48,10 @@ export default new Vuex.Store({
     },
     setEditing(state, editing) {
       state.editing = editing;
-    }
+    },
+    setArchive(state, archive) {
+      state.archive = { ...state.archive, ...archive };
+    },
   },
   actions: {
     addTask({ state, commit }) {
@@ -61,9 +70,23 @@ export default new Vuex.Store({
     },
     deleteTask({ state, commit }, id) {
       const newTasks = state.lists[state.currentList].tasks.filter(
-        task => task.id !== id
+        (task, index) => {
+          if (task.id === id) {
+            commit('setArchive', {
+              list: state.currentList,
+              index,
+              task,
+              undone: false,
+            });
+            return false;
+          }
+          return true;
+        }
       );
       commit('setTasks', { list: state.currentList, tasks: newTasks });
+      setTimeout(() => {
+        commit('setArchive', { list: '', index: -1, task: {} });
+      }, 5000);
     },
     changeList({ commit }, list) {
       commit('setCurrentList', list);
@@ -83,8 +106,9 @@ export default new Vuex.Store({
       commit('setTasks', { list, tasks: newTasks });
     },
     moveTask({ state, commit }, { newList, list, id }) {
+      if (newList === list) return;
       let taskToMove;
-      const newTasks = state.lists[list].tasks.filter(task => {
+      const newTasks = state.lists[list].tasks.filter((task) => {
         if (task.id === id) {
           taskToMove = task;
           return false;
@@ -95,20 +119,33 @@ export default new Vuex.Store({
       commit('setTasks', { list, tasks: newTasks });
       commit('setTasks', { list: newList, tasks: shiftedTasks });
       commit('setEditing', { list: newList, id });
-    }
+    },
+    undoDelete({ state, commit }) {
+      const { list, index, task } = state.archive;
+      const newTasks = [
+        ...state.lists[list].tasks.slice(0, index),
+        task,
+        ...state.lists[list].tasks.slice(index),
+      ];
+      commit('setTasks', { list, tasks: newTasks });
+      commit('setArchive', { list: '', index: -1, task: {}, undone: true });
+      setTimeout(() => {
+        commit('setArchive', { undone: false });
+      }, 5000);
+    },
   },
   getters: {
-    todo: state =>
-      state.lists[state.currentList].tasks.filter(task => !task.completed),
-    completed: state =>
-      state.lists[state.currentList].tasks.filter(task => task.completed),
-    lists: state => Object.keys(state.lists),
-    editingTask: state =>
+    todo: (state) =>
+      state.lists[state.currentList].tasks.filter((task) => !task.completed),
+    completed: (state) =>
+      state.lists[state.currentList].tasks.filter((task) => task.completed),
+    lists: (state) => Object.keys(state.lists),
+    editingTask: (state) =>
       state.editing.list !== null
         ? state.lists[state.editing.list].tasks.filter(
-            task => task.id === state.editing.id
+            (task) => task.id === state.editing.id
           )[0]
         : { title: '', details: '' },
-    state: state => state
-  }
+    state: (state) => state,
+  },
 });
