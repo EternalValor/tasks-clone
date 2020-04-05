@@ -62,14 +62,14 @@ import Icon from './Icon';
 export default {
   name: 'EditForm',
   data: () => ({
-    listMenuOpen: false
+    listMenuOpen: false,
   }),
   components: {
-    Icon
+    Icon,
   },
   computed: {
     ...mapState(['lists', 'editing']),
-    ...mapGetters(['editingTask'])
+    ...mapGetters(['editingTask']),
   },
   methods: {
     handleInputToggle(e) {
@@ -79,20 +79,20 @@ export default {
       this.$store.dispatch('editTask', {
         name: e.target.name,
         value: this.editingTask[e.target.name],
-        ...this.editing
+        ...this.editing,
       });
     },
     toggleListMenu() {
       this.listMenuOpen = !this.listMenuOpen;
-    }
+    },
   },
   watch: {
-    editing: function(val) {
+    editing: function (val) {
       if (val.list !== null) {
         setTimeout(() => this.$refs.titleInput.focus(), 400);
       }
-    }
-  }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -191,8 +191,7 @@ export default {
     background: var(--white);
     font-size: 2.1rem;
     opacity: 0;
-    box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
-      0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+    box-shadow: var(--box-shadow);
     border-radius: 8px;
     overflow: hidden;
     transition: opacity 0.1s ease-in;

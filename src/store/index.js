@@ -133,6 +133,14 @@ export default new Vuex.Store({
         commit('setArchive', { undone: false });
       }, 5000);
     },
+    deleteCurrentList({ state, commit }) {
+      if (Object.keys(state.lists).length > 1) {
+        const newLists = { ...state.lists };
+        delete newLists[state.currentList];
+        commit('setCurrentList', Object.keys(newLists)[0]);
+        commit('setLists', newLists);
+      }
+    },
   },
   getters: {
     todo: (state) =>

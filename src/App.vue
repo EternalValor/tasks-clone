@@ -33,10 +33,13 @@ export default {
   --gray: #5f6368;
   --gray-2: #80868b;
   --gray-3: #ccc;
+  --gray-4: #e6e6e6;
   --blue: #4285f4;
   --gray-blue: #f1f3f4;
   --red: #d93025;
   --border-color: #e6e6e6;
+  --box-shadow: 0 8px 10px 1px rgba(0, 0, 0, 0.14),
+    0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
 }
 
 #app {
