@@ -35,6 +35,7 @@ export default {
   --gray-3: #ccc;
   --blue: #4285f4;
   --gray-blue: #f1f3f4;
+  --red: #d93025;
   --border-color: #e6e6e6;
 }
 

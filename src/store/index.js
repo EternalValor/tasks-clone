@@ -92,7 +92,7 @@ export default new Vuex.Store({
       commit('setCurrentList', list);
     },
     addList({ state, commit }, list) {
-      commit('setLists', { ...state.lists, [list]: { count: 0, tasks: [] } });
+      commit('setLists', { ...state.lists, [list]: { tasks: [] } });
     },
     toggleEditing({ state, commit }, id = null) {
       if (id !== null) commit('setEditing', { list: state.currentList, id });

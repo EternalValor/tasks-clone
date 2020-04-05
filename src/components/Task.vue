@@ -54,7 +54,7 @@
         <div class="context-menu__option" data-type="delete" :data-id="task.id">
           Delete
         </div>
-        <div class="context-menu__option">Move to another list</div>
+        <!-- <div class="context-menu__option">Move to another list</div> -->
       </div>
     </div>
   </div>
@@ -67,15 +67,15 @@ export default {
   name: 'Task',
   data: () => ({
     editing: false,
-    contextMenu: false
+    contextMenu: false,
   }),
   props: {
     task: Object,
-    newest: Boolean
+    newest: Boolean,
   },
   computed: mapState(['currentList']),
   components: {
-    Icon
+    Icon,
   },
   methods: {
     handleTaskClick() {
@@ -97,14 +97,14 @@ export default {
         this.$store.dispatch('deleteTask', this.task.id);
       e.stopPropagation();
       this.contextMenu = false;
-    }
+    },
   },
   mounted() {
     if (this.newest) {
       this.editing = true;
       this.$refs[this.task.id].focus();
     }
-  }
+  },
 };
 </script>
 <style lang="scss" scoped>

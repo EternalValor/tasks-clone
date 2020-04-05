@@ -11,7 +11,7 @@
       <div
         :class="[
           'header__drop-down__list',
-          dropDownOpen ? 'header__drop-down__list--open' : ''
+          dropDownOpen ? 'header__drop-down__list--open' : '',
         ]"
       >
         <div
@@ -51,6 +51,9 @@
             @keydown.enter="createList"
           />
         </div>
+        <span v-if="errored" class="modal__error-message"
+          >* List already exists</span
+        >
         <div class="modal__buttons">
           <div class="modal__button" role="button" @click="toggleModal">
             Cancel
@@ -74,17 +77,18 @@ import { mapState, mapGetters } from 'vuex';
 export default {
   name: 'Home',
   components: {
-    Icon
+    Icon,
   },
   data: () => ({
     dropDownOpen: false,
     modalInputFocused: false,
     newListName: '',
-    modalOpen: false
+    modalOpen: false,
+    errored: false,
   }),
   computed: {
     ...mapState(['currentList']),
-    ...mapGetters(['lists'])
+    ...mapGetters(['lists']),
   },
   methods: {
     toggleDropDown() {
@@ -97,12 +101,17 @@ export default {
       });
     },
     createList() {
-      this.$store.dispatch('addList', this.newListName);
-      this.$store.dispatch('changeList', this.newListName);
-      this.modalOpen = false;
-      this.newListName = '';
-    }
-  }
+      if (this.lists.indexOf(this.newListName) !== -1) {
+        this.errored = true;
+      } else {
+        this.$store.dispatch('addList', this.newListName);
+        this.$store.dispatch('changeList', this.newListName);
+        this.modalOpen = false;
+        this.newListName = '';
+        this.errored = false;
+      }
+    },
+  },
 };
 </script>
 <style lang="scss" scoped>
@@ -267,6 +276,12 @@ export default {
     font-size: 2rem;
     outline: none;
     border: none;
+  }
+
+  &__error-message {
+    color: var(--red);
+    font-size: 1.75rem;
+    font-weight: 500;
   }
 
   &__buttons {

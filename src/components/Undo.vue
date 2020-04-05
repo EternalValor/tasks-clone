@@ -25,9 +25,6 @@ import { mapState } from 'vuex';
 export default {
   name: 'Undo',
   computed: mapState(['archive']),
-  updated() {
-    console.log('archive = ', this.archive);
-  },
 };
 </script>
 <style lang="scss" scoped>
