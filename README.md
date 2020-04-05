@@ -1,24 +1,17 @@
-# tasks-clone
+# A Google Tasks clone built with Vue and Vuex
 
-## Project setup
-```
-yarn install
-```
+## Project setup and start
 
-### Compiles and hot-reloads for development
 ```
-yarn serve
+yarn install && yarn serve
 ```
 
-### Compiles and minifies for production
+### To create a production build in the /dist directory
+
 ```
 yarn build
 ```
 
-### Lints and fixes files
-```
-yarn lint
-```
+## Motivation?
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+I've been a life long _React.js_ developer, but have never dove deep into any other framework. So I started this project as a **Vue.js** learning sandbox. I chose the Google Tasks app to clone as it is a more advanced implementation of the iconic "todo list first project" and seemed to have all the basic features a fully fledged web app would have.
