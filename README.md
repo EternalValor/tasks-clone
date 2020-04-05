@@ -1,5 +1,7 @@
 # A Google Tasks clone built with Vue and Vuex
 
+![App screenshot](./app_screenshot.png)
+
 ## Project setup and start
 
 ```
